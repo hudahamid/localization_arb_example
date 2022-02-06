@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:localization_arb_example/l10n/l10n.dart';
-import 'package:localization_arb_example/page/localization_app_page.dart';
-import 'package:localization_arb_example/page/localization_system_page.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:localization_arb_example/provider/locale_provider.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
               primaryColor: Colors.deepPurpleAccent,
             ),
             locale: provider.locale,
-            supportedLocales: L10n.all,
+            supportedLocales: L10n.all, //  access country code
             localizationsDelegates: [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -54,44 +53,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int index = 0;
+      @override
+      Widget build(BuildContext context) {
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        bottomNavigationBar: buildBottomBar(),
-        body: buildPages(),
-      );
-
-  Widget buildBottomBar() {
-    final style = TextStyle(color: Colors.white);
-
-    return BottomNavigationBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white70,
-      currentIndex: index,
-      items: [
-        BottomNavigationBarItem(
-          icon: Text('Localization', style: style),
-          title: Text('System'),
-        ),
-        BottomNavigationBarItem(
-          icon: Text('Localization', style: style),
-          title: Text('App'),
-        ),
-      ],
-      onTap: (int index) => setState(() => this.index = index),
-    );
-  }
-
-  Widget buildPages() {
-    switch (index) {
-      case 0:
-        return LocalizationSystemPage();
-      case 1:
-        return LocalizationAppPage();
-      default:
-        return Container();
-    }
-  }
+        return MaterialApp(
+          home: Scaffold(
+          body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  const SizedBox(height: 32),
+                    Text(
+                      AppLocalizations.of(context).language,
+                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      AppLocalizations.of(context).helloWorld,
+                      style: TextStyle(fontSize: 36),
+                    ),
+                  ],
+                ),
+              ),
+       ), );
+      }
 }
